@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @author Revan
+ */
+class MessageExecute {
+    
+    
+    public static function run( Message $message ){
+        $method = $message->getMethod();
+        if( is_array( $method ) && sizeof( $method ) == 2 ){
+            static::runClass($message);
+        } else {
+            throw new PUBSUB_EXCEPTION( 'Unsupported Message Method' );
+        }
+    }
+    
+    protected static function runClass( Message $message ){
+        $method = $message->getMethod();
+        $params = $message->getParams();
+        $class = $method[0];
+        $method = $method[1];
+        if( is_array( $params ) ){
+            call_user_func_array( array( $class, $method ), $params );
+        } else {
+            call_user_func( array( $class, $method ), $params );
+        }
+        
+    }
+    
+    protected static function runFunction( Message $message ){}
+}
+
+?>

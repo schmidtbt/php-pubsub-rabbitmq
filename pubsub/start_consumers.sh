@@ -1,0 +1,1 @@
+php -r "require_once('/kore/server/backend/Kore_autoload.php'); ConsumerExecution::start( '$1' );"
